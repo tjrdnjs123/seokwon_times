@@ -8,6 +8,11 @@
     width:500px;
 }
 
+
+.alert{
+    display: flex;
+    justify-content: center;  
+}
 .menus {
     margin-top: 1em;
     display: flex;

@@ -93,11 +93,34 @@
   display: flex;
   justify-content: center;
   margin-top: 0.2em;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 
 @media only screen and (max-width: 600px) {
   .menus {
-    display: none; /* 또는 다른 숨김 스타일을 적용할 수 있습니다. */
+    display: none; 
   }
+}
+
+
+.image-container {
+  max-width: 100%; 
+  height: auto; 
+  overflow: hidden; 
+}
+
+/* 이미지의 스타일 */
+.responsive-image {
+  width: 860px; 
+  height: 215px;
+  display: flex; 
+  margin: 0 auto; 
+}
+
+body {
+  background-color: rgb(240, 235, 222);
+  
 }

@@ -1,5 +1,5 @@
 const API_KEY = "b6b9c6844e12441f8bdc9b756514988";
-// 각 버튼에 클릭 이벤트 리스너 추가
+
 document.querySelectorAll(".sportBtn").forEach((button) => {
   button.addEventListener("click", () => searchByCategory("sports"));
 });
@@ -70,6 +70,7 @@ const searchByCategory = async (category) => {
   url = new URL(
     `https://seokwon-times1.netlify.app/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`
   );
+  page = 1;
   getNews();
 };
 
@@ -154,13 +155,37 @@ const paginationRender = () => {
   }
   let firstPage =
     lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1);
-  let paginationHtml = ` <li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#">Previous</a></li>`;
-  for (let i = firstPage; i <= lastPage; i++) {
+  let paginationHtml =
+    pageGroup == 1
+      ? ""
+      : ` <li class="page-item" title="Go to First Page">
+  <a class="page-link" onclick="moveToPage(${1})" href="#" aria-label="First">
+    <span aria-hidden="true">&laquo;</span>
+  </a>
+</li>
+<li class="page-item" onclick="moveToPage(${page - 1})">
+<a class="page-link" href="#"><span aria-hidden="true">&lsaquo;</span></a>
+</li>`;
+  for (
+    let i = lastPage / 5 != 0 && lastPage > 5 ? lastPage - 4 : firstPage;
+    i <= lastPage;
+    i++
+  ) {
     paginationHtml += `<li class="page-item ${
       i === page ? "active" : ""
     }"onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
   }
-  paginationHtml += `<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" href="#">Next</a></li>`;
+  paginationHtml +=
+    pageGroup == Math.ceil(totalPages / groupSize)
+      ? ""
+      : `<li class="page-item" onclick="moveToPage(${
+          page + 1
+        })"><a class="page-link" href="#"><span aria-hidden="true">&rsaquo;</span></a></li>
+  <li class="page-item"  title="Go to Last Page">
+  <a class="page-link" onclick="moveToPage(${totalPages})" href="#" aria-label="Last">
+    <span aria-hidden="true">&raquo;</span>
+  </a>
+</li>`;
   document.querySelector(".pagination").innerHTML = paginationHtml;
   //   <nav aria-label="Page navigation example">
   //   <ul class="pagination">
@@ -177,7 +202,5 @@ const moveToPage = (pageNum) => {
   page = pageNum;
   getNews();
 };
-
-
 
 getLatestNews();

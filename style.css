@@ -94,3 +94,10 @@
   justify-content: center;
   margin-top: 0.2em;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .menus {
+    display: none; /* 또는 다른 숨김 스타일을 적용할 수 있습니다. */
+  }
+}

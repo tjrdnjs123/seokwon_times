@@ -21,7 +21,16 @@ document.querySelectorAll(".entertainmentBtn").forEach((button) => {
 document.querySelectorAll(".scienceBtn").forEach((button) => {
   button.addEventListener("click", () => searchByCategory("science"));
 });
-
+// pageSize 정
+// page 현재 몇페 정?
+// totalResults 정해져나옴
+// pageGroup 정
+// totalPage 정해져 나온걸 계산
+// 첫페막페
+let totalResults = 0;
+let page = 1;
+const pageSize = 10;
+const groupSize = 5;
 document
   .getElementById("search-input")
   .addEventListener("keypress", function (event) {
@@ -35,18 +44,22 @@ let url = new URL(
 
 const getNews = async () => {
   try {
+    url.searchParams.set("page", page); // &page=page
+    url.searchParams.set("pageSize", pageSize);
     const response = await fetch(url);
     const data = await response.json();
     console.log("r", response);
     console.log("d", data);
+    totalResults = data.totalResults;
     if (response.status === 200) {
+      if (totalResults === 0) {
+        throw new Error("No matches for your search");
+      }
       newsList = data.articles;
       render();
+      paginationRender();
     } else {
       throw new Error(data.message);
-    }
-    if (data.totalResults == 0) {
-      throw new Error("No matches for your search");
     }
   } catch (error) {
     errorRender(error);
@@ -125,8 +138,46 @@ const render = () => {
 };
 
 const errorRender = (error) => {
-  document.getElementById("news-board").innerHTML = `<div class="alert alert-danger" role="alert">
+  document.getElementById(
+    "news-board"
+  ).innerHTML = `<div class="alert alert-danger" role="alert">
   ${error.message}
 </div>`;
-}
+};
+
+const paginationRender = () => {
+  const pageGroup = Math.ceil(page / groupSize);
+  let lastPage = pageGroup * groupSize;
+  let totalPages = Math.ceil(totalResults / pageSize);
+  if (lastPage > totalPages) {
+    lastPage = totalPages;
+  }
+  let firstPage =
+    lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1);
+  let paginationHtml = ` <li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#">Previous</a></li>`;
+  for (let i = firstPage; i <= lastPage; i++) {
+    paginationHtml += `<li class="page-item ${
+      i === page ? "active" : ""
+    }"onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`;
+  }
+  paginationHtml += `<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" href="#">Next</a></li>`;
+  document.querySelector(".pagination").innerHTML = paginationHtml;
+  //   <nav aria-label="Page navigation example">
+  //   <ul class="pagination">
+  //     <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+  //     <li class="page-item"><a class="page-link" href="#">1</a></li>
+  //     <li class="page-item"><a class="page-link" href="#">2</a></li>
+  //     <li class="page-item"><a class="page-link" href="#">3</a></li>
+  //     <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  //   </ul>
+  // </nav>
+};
+const moveToPage = (pageNum) => {
+  console.log(pageNum);
+  page = pageNum;
+  getNews();
+};
+
+
+
 getLatestNews();

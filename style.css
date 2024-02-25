@@ -97,31 +97,30 @@
   transform: translateX(-50%);
 }
 
-
 @media only screen and (max-width: 600px) {
   .menus {
-    display: none; 
+    display: none;
   }
 }
 
-
 .image-container {
-  max-width: 100%; 
-  height: auto; 
-  overflow: hidden; 
-  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin: 20px 0;
+  border-bottom: 4px double #000;
 }
 
-/* 이미지의 스타일 */
+/* 이미지의 스타일g */
 .responsive-image {
   max-width: 100%; /* 변경된 부분 */
-  width: 950px; 
+  width: 950px;
   height: 180px;
-  display: block; 
-  margin: 0 auto; 
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 15px; /* 이미지 아래쪽 여백 추가 */
 }
 
 body {
   background-color: rgb(240, 235, 222);
-  
 }

@@ -1,5 +1,4 @@
 .head-line {
-  margin-top: 2em;
   display: flex;
   justify-content: center;
 }
@@ -110,13 +109,15 @@
   max-width: 100%; 
   height: auto; 
   overflow: hidden; 
+  margin-top: 10px;
 }
 
 /* 이미지의 스타일 */
 .responsive-image {
-  width: 860px; 
-  height: 215px;
-  display: flex; 
+  max-width: 100%; /* 변경된 부분 */
+  width: 950px; 
+  height: 180px;
+  display: block; 
   margin: 0 auto; 
 }
 
